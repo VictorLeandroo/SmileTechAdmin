@@ -1,0 +1,26 @@
+:root{
+    --primary-color: #ff9bb9
+}
+
+.bg-primary {
+    background-color: var(--primary-color);
+}
+
+.bg-image {
+    background-image: url(./img/bg.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+button:disabled {
+    opacity: 0.5;
+    cursor: no-drop;
+}
+
+.div-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
