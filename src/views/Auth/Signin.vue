@@ -127,16 +127,11 @@ const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value
 }
 
-const handleSubmit = () => {
-  // Handle form submission
-  console.log('Form submitted', {
-    email: email.value,
-    password: password.value,
-    keepLoggedIn: keepLoggedIn.value,
-  })
-}
-
 const toDashboard = () => {
-  router.push('/')
+  localStorage.setItem('isLogged', 'true')
+
+  setTimeout(() => {
+    router.push('/')
+  }, 10)
 }
 </script>

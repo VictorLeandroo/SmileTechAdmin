@@ -4,9 +4,9 @@
   >
     <div class="flex flex-col gap-5 mb-6 sm:flex-row sm:justify-between">
       <div class="w-full">
-        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">Statistics</h3>
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">Estatísticas</h3>
         <p class="mt-1 text-gray-500 text-theme-sm dark:text-gray-400">
-          Target you’ve set for each month
+          Acompanhamento da clínica
         </p>
       </div>
 
@@ -28,6 +28,7 @@
         </div>
       </div>
     </div>
+
     <div class="max-w-full overflow-x-auto custom-scrollbar">
       <div id="chartThree" class="-ml-4 min-w-[1000px] xl:min-w-full pl-2">
         <VueApexCharts type="area" height="310" :options="chartOptions" :series="series" />
@@ -38,34 +39,34 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import VueApexCharts from 'vue3-apexcharts'
 
 const options = [
-  { value: 'optionOne', label: 'Monthly' },
-  { value: 'optionTwo', label: 'Quarterly' },
-  { value: 'optionThree', label: 'Annually' },
+  { value: 'optionOne', label: 'Mensal' },
+  { value: 'optionTwo', label: 'Trimestral' },
+  { value: 'optionThree', label: 'Anual' },
 ]
 
 const selected = ref('optionOne')
-import VueApexCharts from 'vue3-apexcharts'
 
 const series = ref([
   {
-    name: 'Sales',
-    data: [180, 190, 170, 160, 175, 165, 170, 205, 230, 210, 240, 235],
+    name: 'Consultas Realizadas',
+    data: [120, 150, 140, 160, 175, 190, 200, 210, 230, 220, 250, 260],
   },
   {
-    name: 'Revenue',
-    data: [40, 30, 50, 40, 55, 40, 70, 100, 110, 120, 150, 140],
+    name: 'Faturamento (R$)',
+    data: [30000, 32000, 31000, 35000, 37000, 42000, 45000, 47000, 50000, 51000, 56000, 59000],
   },
 ])
 
 const chartOptions = ref({
   legend: {
-    show: false,
+    show: true,
     position: 'top',
     horizontalAlign: 'left',
   },
-  colors: ['#465FFF', '#9CB9FF'],
+  colors: ['#0EA5E9', '#22C55E'],
   chart: {
     fontFamily: 'Outfit, sans-serif',
     type: 'area',
@@ -89,60 +90,31 @@ const chartOptions = ref({
   },
   labels: {
     show: false,
-    position: 'top',
   },
   grid: {
-    xaxis: {
-      lines: {
-        show: false,
-      },
-    },
-    yaxis: {
-      lines: {
-        show: true,
-      },
-    },
+    xaxis: { lines: { show: false } },
+    yaxis: { lines: { show: true } },
   },
   dataLabels: {
     enabled: false,
   },
   tooltip: {
-    x: {
-      format: 'dd MMM yyyy',
+    y: {
+      formatter: val => val.toLocaleString('pt-BR'),
     },
   },
   xaxis: {
     type: 'category',
     categories: [
-      'Jan',
-      'Fev',
-      'Mar',
-      'Abr',
-      'Mai',
-      'Jun',
-      'Jul',
-      'Ago',
-      'Set',
-      'Out',
-      'Nov',
-      'Dez',
+      'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
+      'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez',
     ],
-    axisBorder: {
-      show: false,
-    },
-    axisTicks: {
-      show: false,
-    },
-    tooltip: {
-      enabled: false,
-    },
+    axisBorder: { show: false },
+    axisTicks: { show: false },
+    tooltip: { enabled: false },
   },
   yaxis: {
-    title: {
-      style: {
-        fontSize: '0px',
-      },
-    },
+    title: { style: { fontSize: '0px' } },
   },
 })
 </script>

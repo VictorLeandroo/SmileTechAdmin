@@ -111,6 +111,14 @@ const calendarsEvents = reactive({
   Idoso: 'warning',
 })
 
+const colorMap = {
+  Crianca: 'danger',
+  Adolescente: 'success',
+  Adulto: 'primary',
+  Idoso: 'warning'
+}
+
+
 onMounted(() => {
   const today = new Date()
 
@@ -250,7 +258,10 @@ const handleDeleteEvent = () => {
 }
 
 const renderEventContent = (eventInfo) => {
-  const colorClass = `fc-bg-${eventInfo.event.extendedProps.calendar.toLowerCase()}`
+  const tipo = eventInfo.event.extendedProps.calendar
+  const realColor = colorMap[tipo] || 'primary'
+  const colorClass = `fc-bg-${realColor}`
+
   return {
     html: `
       <div class="event-fc-color flex fc-event-main ${colorClass} p-1 rounded-sm">
@@ -261,6 +272,7 @@ const renderEventContent = (eventInfo) => {
     `,
   }
 }
+
 
 const calendarOptions = reactive({
   plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],

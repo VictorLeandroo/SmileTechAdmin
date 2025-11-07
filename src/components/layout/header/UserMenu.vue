@@ -5,7 +5,7 @@
       @click.prevent="toggleDropdown"
     >
       <span class="mr-3 overflow-hidden rounded-full h-11 w-11">
-        <img src="/images/user/owner.jpg" alt="User" />
+        <img src="/images/user/person_6.jpg" alt="User" />
       </span>
 
       <span class="block mr-1 font-medium text-theme-sm">Admin </span>
@@ -50,7 +50,7 @@
         <LogoutIcon
           class="text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-300"
         />
-        Sign out
+        Sair
       </router-link>
     </div>
     <!-- Dropdown End -->
@@ -66,9 +66,9 @@ const dropdownOpen = ref(false)
 const dropdownRef = ref(null)
 
 const menuItems = [
-  { href: '/profile', icon: UserCircleIcon, text: 'Edit profile' },
-  { href: '/chat', icon: SettingsIcon, text: 'Account settings' },
-  { href: '/profile', icon: InfoCircleIcon, text: 'Support' },
+  { href: '/profile', icon: UserCircleIcon, text: 'Editar Perfil' },
+  { href: '/profile', icon: SettingsIcon, text: 'Configurações' },
+  { href: '/profile', icon: InfoCircleIcon, text: 'Suporte' },
 ]
 
 const toggleDropdown = () => {

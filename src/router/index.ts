@@ -31,6 +31,14 @@ const router = createRouter({
       },
     },
     {
+      path: '/users',
+      name: 'Usuários',
+      component: () => import('../views/Others/Users.vue'),
+      meta: {
+        title: 'Usuários',
+      },
+    },
+    {
       path: '/register',
       name: 'register',
       component: () => import('../views/Register/Register.vue'),
@@ -154,6 +162,14 @@ const router = createRouter({
 export default router
 
 router.beforeEach((to, from, next) => {
-  document.title = `Vue.js ${to.meta.title} | TailAdmin - Vue.js Tailwind CSS Dashboard Template`
+  document.title = `${to.meta.title} - SmileTech`
+
+  const isLogged = localStorage.getItem('isLogged')
+
+  if (!isLogged && to.path !== '/signin' && to.path !== '/signup') {
+    return next('/signin')
+  }
+
   next()
 })
+
