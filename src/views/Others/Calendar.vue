@@ -37,8 +37,8 @@
                       <label class="flex items-center text-sm text-gray-700 form-check-label dark:text-gray-400"
                         :for="`modal${key}`">
                         <span class="relative">
-                          <input type="radio" :name="'event-level'" :value="key" :id="`modal${key}`"
-                            v-model="eventLevel" class="sr-only form-check-input" />
+                          <input type="radio" :name="'event-level'" :value="key" :id="`modal${key}`" v-model="eventLevel"
+                            class="sr-only form-check-input" />
                           <span
                             class="flex items-center justify-center w-5 h-5 mr-2 border border-gray-300 rounded-full box dark:border-gray-700">
                             <span class="w-2 h-2 bg-white rounded-full dark:bg-transparent"></span>
@@ -56,6 +56,13 @@
                   Data
                 </label>
                 <input v-model="eventStartDate" type="date"
+                  class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pl-4 pr-11 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />
+              </div>
+              <div class="mt-6">
+                <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                  Horário
+                </label>
+                <input v-model="eventTime" type="time"
                   class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pl-4 pr-11 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />
               </div>
             </div>
@@ -87,7 +94,6 @@
 import AdminLayout from '@/components/layout/AdminLayout.vue'
 import PageBreadcrumb from '@/components/common/PageBreadcrumb.vue'
 import ptBrLocale from '@fullcalendar/core/locales/pt-br'
-const currentPageTitle = ref('Agenda')
 import { ref, reactive, onMounted } from 'vue'
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -95,12 +101,13 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import Modal from '@/components/profile/Modal.vue'
 
+const currentPageTitle = ref('Agenda')
 const calendarRef = ref(null)
 const isOpen = ref(false)
 const selectedEvent = ref(null)
 const eventTitle = ref('')
+const eventTime = ref('')
 const eventStartDate = ref('')
-const eventEndDate = ref('')
 const eventLevel = ref('')
 const events = ref([])
 
@@ -118,97 +125,65 @@ const colorMap = {
   Idoso: 'warning'
 }
 
-
 onMounted(() => {
   const today = new Date()
-
   const thisMonth = today
-  const prevMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1)
-  const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1)
-
   const toDate = d => d.toISOString().split('T')[0]
+  const months = Array.from({ length: 5 }, (_, i) => new Date(today.getFullYear(), today.getMonth() - i, 1))
 
   events.value = [
-    // Mês passado
-    {
-      id: '1',
-      title: 'Laura Martins',
-      start: toDate(new Date(prevMonth.getFullYear(), prevMonth.getMonth(), 5)),
-      extendedProps: { calendar: 'Danger' },
-    },
-    {
-      id: '2',
-      title: 'Felipe Andrade',
-      start: toDate(new Date(prevMonth.getFullYear(), prevMonth.getMonth(), 14)),
-      extendedProps: { calendar: 'Success' },
-    },
-
     // Mês atual
-    {
-      id: '3',
-      title: 'Sofia Ribeiro',
-      start: toDate(new Date(thisMonth.getFullYear(), thisMonth.getMonth(), 3)),
-      extendedProps: { calendar: 'Primary' },
-    },
-    {
-      id: '4',
-      title: 'Gabriel Costa',
-      start: toDate(new Date(thisMonth.getFullYear(), thisMonth.getMonth(), 10)),
-      extendedProps: { calendar: 'Info' },
-    },
-    {
-      id: '5',
-      title: 'Ana Júlia',
-      start: toDate(new Date(thisMonth.getFullYear(), thisMonth.getMonth(), 18)),
-      end: toDate(new Date(thisMonth.getFullYear(), thisMonth.getMonth(), 20)),
-      extendedProps: { calendar: 'Warning' },
-    },
+    { id: '1', title: 'Laura Martins', start: `${toDate(new Date(months[0].getFullYear(), months[0].getMonth(), 5))}T09:00`, extendedProps: { calendar: 'Crianca' } },
+    { id: '2', title: 'Felipe Andrade', start: `${toDate(new Date(months[0].getFullYear(), months[0].getMonth(), 10))}T10:00`, extendedProps: { calendar: 'Adolescente' } },
+    { id: '3', title: 'Sofia Ribeiro', start: `${toDate(new Date(months[0].getFullYear(), months[0].getMonth(), 15))}T14:00`, extendedProps: { calendar: 'Adulto' } },
+    { id: '4', title: 'Gabriel Costa', start: `${toDate(new Date(months[0].getFullYear(), months[0].getMonth(), 20))}T11:30`, extendedProps: { calendar: 'Idoso' } },
+    { id: '5', title: 'Ana Júlia', start: `${toDate(new Date(months[0].getFullYear(), months[0].getMonth(), 25))}T16:00`, extendedProps: { calendar: 'Adulto' } },
 
-    // Mês que vem
-    {
-      id: '6',
-      title: 'Ricardo Almeida',
-      start: toDate(new Date(nextMonth.getFullYear(), nextMonth.getMonth(), 4)),
-      extendedProps: { calendar: 'Success' },
-    },
-    {
-      id: '7',
-      title: 'Carolina Lopes',
-      start: toDate(new Date(nextMonth.getFullYear(), nextMonth.getMonth(), 12)),
-      extendedProps: { calendar: 'Danger' },
-    },
-    {
-      id: '8',
-      title: 'Thiago Pires',
-      start: toDate(new Date(nextMonth.getFullYear(), nextMonth.getMonth(), 22)),
-      end: toDate(new Date(nextMonth.getFullYear(), nextMonth.getMonth(), 25)),
-      extendedProps: { calendar: 'Primary' },
-    },
+    // Mês passado
+    { id: '6', title: 'Ricardo Almeida', start: `${toDate(new Date(months[1].getFullYear(), months[1].getMonth(), 3))}T09:30`, extendedProps: { calendar: 'Adolescente' } },
+    { id: '7', title: 'Carolina Lopes', start: `${toDate(new Date(months[1].getFullYear(), months[1].getMonth(), 7))}T13:00`, extendedProps: { calendar: 'Crianca' } },
+    { id: '8', title: 'Thiago Pires', start: `${toDate(new Date(months[1].getFullYear(), months[1].getMonth(), 12))}T10:30`, extendedProps: { calendar: 'Adulto' } },
+    { id: '9', title: 'Juliana Farias', start: `${toDate(new Date(months[1].getFullYear(), months[1].getMonth(), 19))}T15:00`, extendedProps: { calendar: 'Idoso' } },
+    { id: '10', title: 'Beatriz Lima', start: `${toDate(new Date(months[1].getFullYear(), months[1].getMonth(), 27))}T08:00`, extendedProps: { calendar: 'Adulto' } },
+
+    // 2 meses atrás
+    { id: '11', title: 'Otávio Ramos', start: `${toDate(new Date(months[2].getFullYear(), months[2].getMonth(), 4))}T10:00`, extendedProps: { calendar: 'Adulto' } },
+    { id: '12', title: 'Larissa Gomes', start: `${toDate(new Date(months[2].getFullYear(), months[2].getMonth(), 9))}T14:30`, extendedProps: { calendar: 'Adolescente' } },
+    { id: '13', title: 'Matheus Rocha', start: `${toDate(new Date(months[2].getFullYear(), months[2].getMonth(), 13))}T11:00`, extendedProps: { calendar: 'Adulto' } },
+    { id: '14', title: 'Camila Fernandes', start: `${toDate(new Date(months[2].getFullYear(), months[2].getMonth(), 21))}T09:30`, extendedProps: { calendar: 'Crianca' } },
+    { id: '15', title: 'Paulo Sérgio', start: `${toDate(new Date(months[2].getFullYear(), months[2].getMonth(), 28))}T15:30`, extendedProps: { calendar: 'Idoso' } },
+
+    // 3 meses atrás
+    { id: '16', title: 'Vitor Leandro', start: `${toDate(new Date(months[3].getFullYear(), months[3].getMonth(), 2))}T09:00`, extendedProps: { calendar: 'Adolescente' } },
+    { id: '17', title: 'Eduarda Campos', start: `${toDate(new Date(months[3].getFullYear(), months[3].getMonth(), 6))}T11:30`, extendedProps: { calendar: 'Crianca' } },
+    { id: '18', title: 'Henrique Alves', start: `${toDate(new Date(months[3].getFullYear(), months[3].getMonth(), 14))}T13:30`, extendedProps: { calendar: 'Adulto' } },
+    { id: '19', title: 'Marina Duarte', start: `${toDate(new Date(months[3].getFullYear(), months[3].getMonth(), 22))}T15:00`, extendedProps: { calendar: 'Idoso' } },
+    { id: '20', title: 'André Moreira', start: `${toDate(new Date(months[3].getFullYear(), months[3].getMonth(), 26))}T16:30`, extendedProps: { calendar: 'Adulto' } },
+
+    // 4 meses atrás
+    { id: '21', title: 'Fernanda Souza', start: `${toDate(new Date(months[4].getFullYear(), months[4].getMonth(), 5))}T08:30`, extendedProps: { calendar: 'Crianca' } },
+    { id: '22', title: 'João Pedro', start: `${toDate(new Date(months[4].getFullYear(), months[4].getMonth(), 9))}T10:00`, extendedProps: { calendar: 'Adulto' } },
+    { id: '23', title: 'Rafaela Pinto', start: `${toDate(new Date(months[4].getFullYear(), months[4].getMonth(), 15))}T11:00`, extendedProps: { calendar: 'Adolescente' } },
+    { id: '24', title: 'Luiz Otávio', start: `${toDate(new Date(months[4].getFullYear(), months[4].getMonth(), 20))}T13:00`, extendedProps: { calendar: 'Adulto' } },
+    { id: '25', title: 'Bruna Silveira', start: `${toDate(new Date(months[4].getFullYear(), months[4].getMonth(), 28))}T15:30`, extendedProps: { calendar: 'Idoso' } },
   ]
+
 })
 
-
-const openModal = () => {
-  isOpen.value = true
-}
-
-const closeModal = () => {
-  isOpen.value = false
-  resetModalFields()
-}
+const openModal = () => { isOpen.value = true }
+const closeModal = () => { isOpen.value = false; resetModalFields() }
 
 const resetModalFields = () => {
   eventTitle.value = ''
   eventStartDate.value = ''
-  eventEndDate.value = ''
+  eventTime.value = ''
   eventLevel.value = ''
   selectedEvent.value = null
 }
 
 const handleDateSelect = (selectInfo) => {
   resetModalFields()
-  eventStartDate.value = selectInfo.startStr
-  eventEndDate.value = selectInfo.endStr || selectInfo.startStr
+  eventStartDate.value = selectInfo.startStr.split('T')[0]
   openModal()
 }
 
@@ -217,42 +192,59 @@ const handleEventClick = (clickInfo) => {
   selectedEvent.value = event
   eventTitle.value = event.title
   eventStartDate.value = event.start?.toISOString().split('T')[0] || ''
-  eventEndDate.value = event.end?.toISOString().split('T')[0] || ''
+  eventTime.value = event.start?.toTimeString().slice(0, 5) || ''
   eventLevel.value = event.extendedProps.calendar
   openModal()
 }
 
 const handleAddOrUpdateEvent = () => {
+  if (!eventTitle.value || !eventStartDate.value || !eventTime.value || !eventLevel.value) {
+    alert('Preencha todos os campos antes de salvar!')
+    return
+  }
+
+  // Monta a data e hora completa (ex: 2025-11-08T14:30)
+  const startDateTime = `${eventStartDate.value}T${eventTime.value}`
+
+  // Verifica se já existe uma consulta nesse mesmo horário
+  const hasConflict = events.value.some(ev =>
+    ev.start === startDateTime && ev.id !== selectedEvent.value?.id
+  )
+
+  if (hasConflict) {
+    alert('Já existe uma consulta marcada nesse horário!')
+    return
+  }
+
   if (selectedEvent.value) {
-    // Update existing event
-    events.value = events.value.map((event) =>
-      event.id === selectedEvent.value.id
+    // Atualiza evento existente
+    events.value = events.value.map(ev =>
+      ev.id === selectedEvent.value.id
         ? {
-          ...event,
+          ...ev,
           title: eventTitle.value,
-          start: eventStartDate.value,
-          end: eventEndDate.value,
+          start: startDateTime,
           extendedProps: { calendar: eventLevel.value },
         }
-        : event,
+        : ev
     )
   } else {
-    // Add new event
+    // Adiciona novo evento
     const newEvent = {
       id: Date.now().toString(),
       title: eventTitle.value,
-      start: eventStartDate.value,
-      end: eventEndDate.value,
-      allDay: true,
+      start: startDateTime,
       extendedProps: { calendar: eventLevel.value },
     }
     events.value.push(newEvent)
   }
+
   closeModal()
 }
+
 const handleDeleteEvent = () => {
   if (selectedEvent.value) {
-    events.value = events.value.filter((event) => event.id !== selectedEvent.value.id)
+    events.value = events.value.filter(ev => ev.id !== selectedEvent.value.id)
     closeModal()
   }
 }
@@ -265,14 +257,12 @@ const renderEventContent = (eventInfo) => {
   return {
     html: `
       <div class="event-fc-color flex fc-event-main ${colorClass} p-1 rounded-sm">
-        <div class="fc-daygrid-event-dot"></div>
         <div class="fc-event-time">${eventInfo.timeText}</div>
         <div class="fc-event-title">${eventInfo.event.title}</div>
       </div>
     `,
   }
 }
-
 
 const calendarOptions = reactive({
   plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
@@ -283,12 +273,7 @@ const calendarOptions = reactive({
     center: 'title',
     right: 'dayGridMonth,timeGridWeek,timeGridDay',
   },
-  buttonText: {
-    month: 'Mês',
-    week: 'Semana',
-    day: 'Dia',
-    today: 'Hoje',
-  },
+  buttonText: { month: 'Mês', week: 'Semana', day: 'Dia', today: 'Hoje' },
   events: events,
   selectable: true,
   select: handleDateSelect,
@@ -301,5 +286,5 @@ const calendarOptions = reactive({
     },
   },
 })
-
 </script>
+
