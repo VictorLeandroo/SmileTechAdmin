@@ -29,7 +29,7 @@
 
               <div class="mt-6">
                 <label class="block mb-4 text-sm font-medium text-gray-700 dark:text-gray-400">
-                  Event Color
+                  Grupo de faixa etária
                 </label>
                 <div class="flex flex-wrap items-center gap-4 sm:gap-5">
                   <div v-for="(value, key) in calendarsEvents" :key="key" class="n-chk">
